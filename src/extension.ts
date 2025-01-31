@@ -38,7 +38,7 @@ Language: ${languageId}
 Complete the following code:
 ${linePrefix}`;
 
-try {
+  try {
     const completion = await openai.chat.completions.create({
       model: process.env.MODEL as string,
       messages: [
@@ -52,23 +52,31 @@ try {
       temperature: 0.2,
       max_tokens: 256,
     });
-  
+
     let completionText = completion.choices[0]?.message?.content?.trim() || "";
-  
+
     // Post-process the completion to ensure it contains only code
     // Avoid removing single and double quotes
-    completionText = completionText.replace(/[^a-zA-Z0-9\s\{\}\(\)\[\]\;\:\.\,\+\-\*\/\%\=\>\<\!\&\|\^\~\?\\"']/g, '');
-  
+    completionText = completionText.replace(
+      /[^a-zA-Z0-9\s\{\}\(\)\[\]\;\:\.\,\+\-\*\/\%\=\>\<\!\&\|\^\~\?\\"']/g,
+      ""
+    );
+
     // Remove any language ID that might be included
-    completionText = completionText.replace(new RegExp(`\\b${languageId}\\b`, 'gi'), '');
-  
+    completionText = completionText.replace(
+      new RegExp(`\\b${languageId}\\b`, "gi"),
+      ""
+    );
+
     // Ensure the completion text does not include any theoretical explanations
-    completionText = completionText.replace(/(\/\/.*|\/\*[\s\S]*?\*\/)/g, '');
-  
+    completionText = completionText.replace(/(\/\/.*|\/\*[\s\S]*?\*\/)/g, "");
+
     return completionText;
   } catch (error) {
     console.error("Error fetching code completion:", error);
-    vscode.window.showErrorMessage("Failed to fetch code completion. Please check your API key and connection.");
+    vscode.window.showErrorMessage(
+      "Failed to fetch code completion. Please check your API key and connection."
+    );
     throw error; // Re-throw the error for further handling if needed
   }
 }

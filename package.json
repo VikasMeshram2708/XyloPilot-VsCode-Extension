@@ -2,12 +2,19 @@
   "name": "ai-code-completion",
   "displayName": "xylopilot",
   "description": "ai powered code completion",
+  "publisher": "VikasMeshram",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.96.0"
   },
+  "icon": "images/icon.png",
   "categories": [
     "Other"
+  ],
+  "files": [
+    "dist",
+    "icon.png",
+    "README.md"
   ],
   "activationEvents": [
     "onLanguage:typescript",
